@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-import { Transform3d } from "react-css-transform";
 import { useWindowDimensions } from "../hooks/window";
 import { rhythm } from "../utils/typography";
+
 const unhex = str => str.substring(str.indexOf('#') + 1);
 
-const plus2 = (fill = colors.MidnightBlue, opacity = 1) =>
-  `url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22%20fill%3D%22%23${unhex(
-    fill
-  )}%22%20fill-opacity%3D%22${opacity}%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E')`;
-
-const svgstring = (fill: string) => `<svg width="20" height="20" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><circle cx="25" cy="25" r="4" stroke="blue" stroke-width="0" fill="${unhex(fill)}" /></svg>`;
+const svgstring = (fill: string) => `<svg width="20" height="20" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg"><circle cx="25" cy="25" r="4" stroke="blue" stroke-width="0" fill="${unhex(fill)}" /></svg>`;
 
 const plus = (fill = colors.MidnightBlue, opacity = 1) =>
   `url('data:image/svg+xml,${svgstring(fill)}')`;
@@ -40,7 +35,41 @@ const Logo = ({ x0, x1, y0, y1 }) => {
 
     <path d={`M${tl} Q${total * 0.45} ${total * 0.0} ${total * 0.6} ${total * y0} T ${total * x1} ${total * y0} L${br} L${bl}`} strokeWidth={total * 0.01} fill="#223" />
   </svg>;
-}
+};
+
+const Pyramid = ({ dx, dy, width, height }) => {
+  const total = 100;
+
+  const center = `${total / 2 + dx} ${total / 2 + dy}`;
+
+  return <svg width={width} height={height} preserveAspectRatio="none" viewBox={`0 0 ${total} ${total}`} xmlns="http://www.w3.org/2000/svg">
+    {/* L */}
+    <path d={`M 0 0 L ${center} L 0 ${total} L 0 0`} fill={colors.LightPink} />
+    {/* B */}
+    <path d={`M 0 ${total} L ${center} L ${total} ${total} L 0 ${total}`} fill={colors.MidnightBlue} />
+    {/* R */}
+    <path d={`M ${total} 0 L ${center} L ${total} ${total} L ${total} 0`} fill={colors.Umber} />
+    {/* T */}
+    <path d={`M ${total} 0 L ${center} L 0 0 L ${total} 0`} fill={"#fff"} />
+  </svg>;
+};
+
+const Line = ({ width, height }) => {
+  return <div style={{
+    height,
+    width,
+    backgroundColor: "#fefe",
+    marginLeft: 10,
+  }}>
+  </div>;
+};
+
+const Line2 = ({ width, height }) => {
+  console.log(width, height);
+  return <svg width="100%" height="100%" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox={`0 0 1000 10`}>
+    <rect fill="rgb(222,255,255)" width={1000} height={20} />
+  </svg>;
+};
 
 const HeroicPopout = ({ height, width }) => {
   const HERO_SCALE = 0.9;
@@ -69,7 +98,7 @@ const HeroicPopout = ({ height, width }) => {
       top: height * boxCoords.y0 * HERO_SCALE,
       left: width * boxCoords.x0 * HERO_SCALE,
       right: width * (1 - boxCoords.x1) * HERO_SCALE,
-    }}>{"Fundementals of Design"}</h1>
+    }}>{"Windowsill . dev"}</h1>
   </div>
 };
 
@@ -89,15 +118,130 @@ export default function Home() {
   const { width, height } = useWindowDimensions();
   const [isShown, setIsShown] = useState(false);
 
+  const lines = Math.ceil(width / 12);
+
   return <div>
     <div style={{ ...st, height, width }} >
-      <HeroicPopout height={height} width={width} />
-    </div>
-    <div style={{
-      height: 100, width: 100, backgroundColor: "blue"
-    }} />
+      {/* <HeroicPopout height={height} width={width} /> */}
+      <h1 style={{
+        color: colors.MidnightBlue,
+        fontSize: "120pt",
+        padding: rhythm(2),
+      }}>{"Windowsill.dev"}</h1>
+      <h3 style={{
+        color: colors.MidnightBlue,
+        backgroundColor: colors.LightPink,
+        padding: rhythm(2),
+      }}>{"Staying Indoors | React Native | Typescript"}</h3>
+      <div style={{ position: "relative", height: "100vh" }}>
+        {/* <div style={{
+          position: "absolute",
+          top: 0,
+        }}>
+          {Array.from(new Array(100)).map((_e, i) => {
+            return <Line width={((Math.sin(i / Math.PI) + 1) / 2) * (width * 0.15) + (width * 0.5)} height={height} />;
+          })}
+        </div>
 
-    <Transform3d rotate={theta} rotateAxis={a} translate={{ x: 100 }}>
+        <div style={{
+          position: "absolute",
+          top: 3,
+        }}>
+          {Array.from(new Array(100)).map((_e, i) => {
+            return <Line width={((Math.sin(i / Math.PI) + 1) / 2) * (width * 0.15) + (width * 0.6)} height={height} />;
+          })}
+        </div>
+        <div style={{
+          position: "absolute",
+          top: 6,
+        }}>
+          {Array.from(new Array(100)).map((_e, i) => {
+            return <Line width={((Math.sin(i / Math.PI) + 1) / 2) * (width * 0.15) + (width * 0.7)} height={height} />;
+          })}
+        </div> */}
+        <div style={{
+          display: "flex",
+          flexDirection: "row",
+          position: "absolute",
+        }}>
+          {Array.from(new Array(lines)).map((_e, i) => {
+            return <Line height={((Math.sin(i / Math.PI) + 1) / 2) * (height * 0.15) + (height * 0.35)} width={2} />;
+          })}
+        </div>
+        <div style={{
+          display: "flex",
+          flexDirection: "row",
+          position: "absolute",
+          paddingLeft: "3px",
+        }}>
+          {Array.from(new Array(lines)).map((_e, i) => {
+            return <Line height={((Math.sin(i / Math.PI) + 1) / 2) * (height * 0.15) + (height * 0.35)} width={2} />;
+          })}
+        </div>
+
+        <div style={{
+          display: "flex",
+          flexDirection: "row",
+          position: "absolute",
+          paddingLeft: "6px",
+        }}>
+          {Array.from(new Array(lines)).map((_e, i) => {
+            return <Line height={((Math.sin(i / Math.PI) + 1) / 2) * (height * 0.15) + (height * 0.35)} width={2} />;
+          })}
+        </div>
+        {/* <div style={{
+          position: "absolute",
+          top: 0,
+          transform: "rotate(-90deg)",
+        }}>
+          {Array.from(new Array(60)).map((_e, i) => {
+            return <Line width={((Math.sin(i / Math.PI) + 1) / 2) * (width * 0.16) + (width * 0.20)} height={height} />;
+          })}
+        </div>
+        <div style={{
+          position: "absolute",
+          top: 0,
+          transform: "rotate(-90deg)",
+        }}>
+          {Array.from(new Array(60)).map((_e, i) => {
+            return <Line width={((Math.sin(i / Math.PI) + 1) / 2) * (width * 0.17) + (width * 0.20)} height={height} />;
+          })}
+        </div> */}
+      </div>
+    </div>
+    {/* <div style={{
+      marginTop: "150vh",
+      height: "100vh",
+      width: "100wh",
+      backgroundColor: "rgb(245, 243, 235)",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+    }} >
+      <Paint color="rgb(211, 173, 177)" />
+      <Paint color="rgb(76, 72, 69)" />
+      <Paint color="rgb(79, 111, 133)" />
+      <Paint color="rgb(245, 243, 235)" />
+      <Paint color="rgb(203, 201, 198)" />
+      <Paint color="rgb(63, 80, 82)" />
+      <Paint color="rgb(36, 91, 97)" />
+
+    </div> */}
+
+    <div style={{ height, width, backgroundColor: "#fff" }} >
+
+    </div>
+
+    <div style={{ height, width, backgroundColor: "#fff" }} >
+
+      {Array.from(new Array(50)).map((_e, ix) => {
+        return Array.from(new Array(50)).map((_e, iy) => {
+          return <Pyramid dy={iy * 4 - 100} dx={ix * 4 - 100} width={Math.min(width, height) / 50} height={Math.min(width, height) / 50} />
+        })
+      })}
+    </div>
+
+    {/* <Transform3d rotate={theta} rotateAxis={a} translate={{ x: 100 }}>
       <div
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
@@ -132,7 +276,13 @@ Optional. An enum: either MULTIPLICATION_ORDER.PRE or MULTIPLICATION_ORDER.POST.
     </Transform3d>
     <Transform3d rotate={theta} rotateAxis={yAxis}>
       <div style={{ width: 100, height: 100, margin: 5, background: '#0f0' }} />
-    </Transform3d>
+    </Transform3d> */}
 
   </div >;
 };
+
+const Paint = ({ color }) => <div style={{
+  backgroundColor: color,
+  height: "75vh",
+  width: "100%",
+}}></div>;
