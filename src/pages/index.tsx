@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useWindowDimensions } from "../hooks/window";
 import { rhythm } from "../utils/typography";
+import { isBrowser } from "../utils/browser";
 
 const unhex = str => str.substring(str.indexOf('#') + 1);
 
@@ -103,8 +104,8 @@ const HeroicPopout = ({ height, width }) => {
 };
 
 const translateToCentre = {
-  x: window.innerWidth / 2,
-  y: window.innerHeight / 2
+  x: isBrowser() ? window.innerWidth / 2 : 0,
+  y: isBrowser() ? window.innerHeight / 2 : 0,
 };
 
 const theta = Math.PI / 3;
